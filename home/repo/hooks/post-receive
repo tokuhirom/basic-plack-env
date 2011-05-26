@@ -1,0 +1,14 @@
+#!/bin/bash
+
+echo $HOME/
+
+export GIT_WORK_TREE=$HOME/code/
+mkdir -p $HOME/code/
+git checkout -f
+
+cd $HOME/code/
+perl -I $HOME/perl5/lib/perl5/ -Mlocal::lib=$HOME/perl5/ /usr/local/bin/cpanm --notest --local-lib=~/perl5/ --installdeps .
+
+if [ -x 'postinstall' ]; then
+	./postinstall
+fi
