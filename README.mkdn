@@ -1,1 +1,11 @@
+Initialize
+==========
+
+Initialize environment for basic web server.
+
+You would run ./init.sh
+
+Create new project
+===================
+
 
