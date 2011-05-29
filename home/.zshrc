@@ -34,8 +34,6 @@ setopt share_history                  # 履歴を全端末で共有
 export HARNESS_COLOR=1 # Test::Harness.
 
 # zsh completion
-fpath=(~/.zsh/completion/ $fpath)
-autoload -U ~/.zsh/completion/*(:t)
 autoload -U compinit
 # -C: security check を無視 http://www.u-suke.org/wiki/?page=zsh%2Fcompinit
 compinit -C
@@ -158,7 +156,7 @@ function totalprocsize() {
 # perl5 specific settngs
 export PERL_BADLANG=0
 export PLACK_ENV=deployment
-export PERL_CPANM_OPT="-n -l ~/perl5/"
-export PATH="/home/perldocjp/perl5/bin:$PATH";
+export PERL_CPANM_OPT="-n -l ~/perl5/ --no-man-pages"
+export PATH="$HOME/perl5/bin:$PATH";
 export PERL5OPT="-Mlib=$HOME/perl5/lib/perl5/"
 

@@ -100,7 +100,7 @@ fi
 
 # perl5 specific settngs
 export PLACK_ENV=deployment
-export PERL_CPANM_OPT="-n -l ~/perl5/"
-export PATH="/home/perldocjp/perl5/bin:$PATH";
+export PERL_CPANM_OPT="-n -l ~/perl5/ --no-man-pages"
+export PATH="$HOME/perl5/bin:$PATH";
 export PERL5OPT="-Mlib=$HOME/perl5/lib/perl5/"
 

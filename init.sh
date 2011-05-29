@@ -5,3 +5,4 @@ sudo chmod +x /usr/local/bin/cpanm
 sudo cp nginx.conf /etc/nginx/nginx.conf
 sudo /etc/init.d/nginx start
 sudo groupadd app
+sudo cpanm --no-man-pages Module::Install Module::Install::AuthorTests HTTP::Parser::XS local::lib
