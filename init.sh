@@ -3,7 +3,7 @@
 # NOTE: supervisord in ubuntu is too old and it doesn't parse "environment" parameter correctly.
 #       I need to install supervisor from pypi.
 
-sudo aptitude install -y nginx w3m build-essential git cvs curl screen git-core wget python-setuptools
+sudo aptitude install -y nginx build-essential curl git-core python-setuptools
 sudo curl -o /usr/local/bin/cpanm -L http://cpanmin.us/
 sudo chmod +x /usr/local/bin/cpanm
 sudo cp nginx.conf /etc/nginx/nginx.conf
