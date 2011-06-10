@@ -18,5 +18,7 @@ if [ -x 'postinstall' ]; then
 	./postinstall
 fi
 
-pkill -f $HOME/perl5/bin/plackup
+supervisorctl -c $HOME/supervisord.conf reread
+supervisorctl -c $HOME/supervisord.conf update
+supervisorctl -c $HOME/supervisord.conf restart all
 

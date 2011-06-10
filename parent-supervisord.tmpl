@@ -1,0 +1,11 @@
+[program:<USER>]
+directory=<HOME>
+command=/usr/local/bin/supervisord --user <USER> --nodaemon --identifier <USER> --config <HOME>/supervisord.conf
+autostart=true
+autorestart=true
+stdout_logfile=/var/log/supervisor/<USER>.log
+stderr_logfile=/var/log/supervisor/<USER>.log
+stopsignal=INT
+user=<USER>
+environment=USER=<USER>,HOME=<HOME>
+

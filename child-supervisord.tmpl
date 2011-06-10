@@ -1,0 +1,28 @@
+; supervisor config file
+
+[unix_http_server]
+file=<HOME>/run//supervisor.sock   ; (the path to the socket file)
+chmod=0700                       ; sockef file mode (default 0700)
+
+[supervisord]
+logfile=<HOME>/log/supervisord.log ; (main log file;default $CWD/supervisord.log)
+pidfile=<HOME>/run/supervisord.pid ; (supervisord pidfile;default supervisord.pid)
+childlogdir=<HOME>/log/supervisor            ; ('AUTO' child log dir, default $TEMP)
+
+[rpcinterface:supervisor]
+supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
+
+[supervisorctl]
+serverurl=unix://<HOME>/run//supervisor.sock ; use a unix:// URL  for a unix socket
+
+[program:plackup]
+directory=<HOME>/code
+command=perl -Mlib=<HOME>/perl5/lib/perl5 <HOME>/perl5/bin/plackup -s Starlet -p <PORT> -E deployment <HOME>/code/app.psgi
+autostart=true
+autorestart=true
+stdout_logfile=<HOME>/log/plackup.log
+stderr_logfile=<HOME>/log/plackup.log
+stopsignal=TERM
+
+[include]
+files = <HOME>/code/supervisord.conf
