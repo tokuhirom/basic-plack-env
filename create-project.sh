@@ -22,7 +22,10 @@ sudo mkdir -p /usr/local/webapp/
 sudo useradd --gid app --create-home --skel `pwd`/home/ --password `perl -le 'use Time::HiRes qw/gettimeofday/;use Digest::MD5 qw/md5_hex/; print md5_hex(rand().gettimeofday())'` --shell /bin/bash --home $PL_HOME $USER
 PORT=`perl -e 'print scalar(getpwnam(shift))+5000' $USER`
 
+# /etc/supervisor/conf.d/$USER.conf
 sudo PL_USER=$USER PL_PORT=$PORT PL_DOMAIN=$DOMAIN PL_HOME=$PL_HOME perl -pe 's/<([A-Z_]+)>/$ENV{"PL_$1"}/ge' < parent-supervisord.tmpl | sudo tee /etc/supervisor/conf.d/$USER.conf > /dev/null
+
+# $HOME/supervisord.conf
 sudo PL_USER=$USER PL_PORT=$PORT PL_DOMAIN=$DOMAIN PL_HOME=$PL_HOME perl -pe 's/<([A-Z_]+)>/$ENV{"PL_$1"}/ge' < child-supervisord.tmpl | sudo tee $HOME/supervisord.conf > /dev/null
 sudo PL_USER=$USER PL_PORT=$PORT PL_DOMAIN=$DOMAIN PL_HOME=$PL_HOME perl -pe 's/<([A-Z_]+)>/$ENV{"PL_$1"}/ge' < site-nginx.tmpl | sudo tee /etc/nginx/sites-enabled/$USER.conf > /dev/null
 
