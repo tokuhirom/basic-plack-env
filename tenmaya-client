@@ -1,8 +1,11 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 use strict;
 use warnings;
 use 5.010001;
 use Pod::Usage;
+use Cwd;
+
+my $BASE = '/usr/local/webapp/';
 
 &main; exit;
 
@@ -30,22 +33,44 @@ sub CMD_push {
     my $directory = shift @ARGV // pod2usage();
 
     my $server = get_server();
-    run(
-        'rsync',
-        qw(--avz),
-        qw(-e ssh),
-        qw(--delete),
-        qw(--dry-run),
-        "ssh://$server/usr/local/webapp/$project/", # src
-        $directory,                                 # dst
-    );
-    ssh_cmd($project, "cpanm --installdeps /usr/local/webapp/$project/");
-    ssh_cmd($project, "/bin/sh -c 'supervisorctl -c ~/etc/supervisord.conf'");
+    {
+        my $guard = Chdir::Guard->new();
+        chdir($directory);
+        run(
+            'rsync',
+            qw(-avz),
+            qw(-e ssh),
+            qw(--delete),
+            # qw(--dry-run),
+            './',                                           # src
+            "$project\@$server:$BASE/$project/code/", # dst
+        );
+    }
+
+    ssh_cmd($project, "cpanm -l $BASE/$project/perl5/ --notest --verbose --no-man-pages --installdeps $BASE/$project/code/");
+    ssh_cmd($project, "/bin/sh", '-c', "cd $BASE/$project/ && if [ -x postinstall ]; then ./postinstall; fi");
+    for ('reread', 'update', 'restart all') {
+        ssh_cmd($project, "supervisorctl", $_);
+    }
+    ssh_cmd($project, "tail", "$BASE/$project/log/plackup.log");
 }
 
 sub get_server {
     my $server = $ENV{TENMAYA_SERVER} // die "Missing tenmaya server information in \$ENV{TENMAYA_SERVER}";
     return $server;
+}
+
+package # hide from pause
+    Chdir::Guard;
+
+sub new {
+    my $class = shift;
+    bless \do { my $cwd = Cwd::getcwd() }, $class;
+}
+
+sub DESTROY {
+    my $self = shift;
+    chdir($$self);
 }
 
 __END__
