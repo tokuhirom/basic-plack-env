@@ -1,0 +1,74 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+use 5.010001;
+use Pod::Usage;
+
+&main; exit;
+
+sub main {
+    my $command = shift @ARGV // pod2usage();
+       $command =~ s/-/_/g;
+
+    my $code = __PACKAGE__->can("CMD_$command") // pod2usage();
+    $code->();
+}
+
+sub run {
+    print "[run] @_\n";
+    system(@_) == 0 or die "[run][FAIL] $!";
+}
+
+sub ssh_cmd {
+    my ($project) = (shift);
+    my $server = get_server();
+    run('ssh', "$project\@$server", @_);
+}
+
+sub CMD_push {
+    my $project   = shift @ARGV // pod2usage();
+    my $directory = shift @ARGV // pod2usage();
+
+    my $server = get_server();
+    run(
+        'rsync',
+        qw(--avz),
+        qw(-e ssh),
+        qw(--delete),
+        qw(--dry-run),
+        "ssh://$server/usr/local/webapp/$project/", # src
+        $directory,                                 # dst
+    );
+    ssh_cmd($project, "cpanm --installdeps /usr/local/webapp/$project/");
+    ssh_cmd($project, "/bin/sh -c 'supervisorctl -c ~/etc/supervisord.conf'");
+}
+
+sub get_server {
+    my $server = $ENV{TENMAYA_SERVER} // die "Missing tenmaya server information in \$ENV{TENMAYA_SERVER}";
+    return $server;
+}
+
+__END__
+
+=head1 NAME
+
+tenmaya - yet another container environment.
+
+=head1 SYNOPSIS
+
+    # push project directory to the remote server
+    % tenmaya push foo ~/dev/foo
+
+=head1 DESCRIPTION
+
+This is a client script for tenmaya environment.
+
+=head1 ENVIRONMENT VARIABLES
+
+=over 4
+
+=item TENMAYA_SERVER
+
+The server name for tenmaya environment.
+
+=back
