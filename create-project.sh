@@ -27,17 +27,16 @@ sudo PL_USER=$USER PL_PORT=$PORT PL_DOMAIN=$DOMAIN PL_HOME=$PL_HOME perl -pe 's/
 
 # $HOME/supervisord.conf
 sudo PL_USER=$USER PL_PORT=$PORT PL_DOMAIN=$DOMAIN PL_HOME=$PL_HOME perl -pe 's/<([A-Z_]+)>/$ENV{"PL_$1"}/ge' < child-supervisord.tmpl | sudo tee $HOME/supervisord.conf > /dev/null
+
+#/etc/nginx/sites-enabled/$USER.conf
 sudo PL_USER=$USER PL_PORT=$PORT PL_DOMAIN=$DOMAIN PL_HOME=$PL_HOME perl -pe 's/<([A-Z_]+)>/$ENV{"PL_$1"}/ge' < site-nginx.tmpl | sudo tee /etc/nginx/sites-enabled/$USER.conf > /dev/null
 
-sudo -H -u $USER git init --bare $HOME/repo/
+sudo -H -u $USER mkdir -p $HOME/log/nginx/
 sudo -H -u $USER mkdir -p $HOME/log/supervisor/
 sudo -H -u $USER mkdir -p $HOME/run/
 sudo -H -u $USER mkdir -p $HOME/tmp/
-sudo -H mkdir -p /var/log/nginx/$USER/
 
-cd $HOME
-sudo -H -u $USER cpanm --no-man-pages --local-lib $HOME/perl5/ --notest Plack Starlet Linux::Inotify2 HTTP::Parser::XS
-
+# reload parent supervisorctl process
 sudo -H supervisorctl reread
 sudo -H supervisorctl update
 sudo -H supervisorctl start all

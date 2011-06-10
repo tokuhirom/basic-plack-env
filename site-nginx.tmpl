@@ -5,8 +5,8 @@ server {
 
     charset utf-8;
 
-    access_log /var/log/nginx/<USER>/access.log  main  buffer=32k;
-    error_log  /var/log/nginx/<USER>/error.log;
+    access_log <HOME>/log/nginx-access.log  main  buffer=32k;
+    error_log  <HOME>/log/nginx-error.log;
 
     location / {
         if ( -f /usr/local/webapp/<USER>/code/maintenance) {
