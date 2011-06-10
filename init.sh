@@ -3,13 +3,12 @@
 # NOTE: supervisord in ubuntu is too old and it doesn't parse "environment" parameter correctly.
 #       I need to install supervisor from pypi.
 
-sudo aptitude install -y nginx build-essential curl git-core python-setuptools
+sudo aptitude install -y nginx build-essential curl git-core python-setuptools libperl-dev
 sudo curl -o /usr/local/bin/cpanm -L http://cpanmin.us/
 sudo chmod +x /usr/local/bin/cpanm
 sudo cp nginx.conf /etc/nginx/nginx.conf
 sudo /etc/init.d/nginx start
 sudo groupadd app
-sudo -H cpanm --no-man-pages Module::Install Module::Install::AuthorTests HTTP::Parser::XS local::lib Text::MicroTemplate
 
 echo "@@SUPERVISORD"
 sudo easy_install supervisor

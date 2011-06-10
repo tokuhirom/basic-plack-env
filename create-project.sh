@@ -26,7 +26,7 @@ PORT=`perl -e 'print scalar(getpwnam(shift))+5000' $USER`
 sudo PL_USER=$USER PL_PORT=$PORT PL_DOMAIN=$DOMAIN PL_HOME=$PL_HOME perl -pe 's/<([A-Z_]+)>/$ENV{"PL_$1"}/ge' < parent-supervisord.tmpl | sudo tee /etc/supervisor/conf.d/$USER.conf > /dev/null
 
 # $HOME/supervisord.conf
-sudo PL_USER=$USER PL_PORT=$PORT PL_DOMAIN=$DOMAIN PL_HOME=$PL_HOME perl -pe 's/<([A-Z_]+)>/$ENV{"PL_$1"}/ge' < child-supervisord.tmpl | sudo tee $HOME/supervisord.conf > /dev/null
+sudo PL_USER=$USER PL_PORT=$PORT PL_DOMAIN=$DOMAIN PL_HOME=$PL_HOME perl -pe 's/<([A-Z_]+)>/$ENV{"PL_$1"}/ge' < child-supervisord.tmpl | sudo -u $USER tee $HOME/supervisord.conf > /dev/null
 
 #/etc/nginx/sites-enabled/$USER.conf
 sudo PL_USER=$USER PL_PORT=$PORT PL_DOMAIN=$DOMAIN PL_HOME=$PL_HOME perl -pe 's/<([A-Z_]+)>/$ENV{"PL_$1"}/ge' < site-nginx.tmpl | sudo tee /etc/nginx/sites-enabled/$USER.conf > /dev/null
@@ -35,6 +35,7 @@ sudo -H -u $USER mkdir -p $HOME/log/nginx/
 sudo -H -u $USER mkdir -p $HOME/log/supervisor/
 sudo -H -u $USER mkdir -p $HOME/run/
 sudo -H -u $USER mkdir -p $HOME/tmp/
+sudo -H -u $USER mkdir -p $HOME/code/
 
 # reload parent supervisorctl process
 sudo -H supervisorctl reread
