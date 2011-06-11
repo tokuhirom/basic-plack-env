@@ -85,8 +85,11 @@ tenmaya - yet another container environment.
 
 =head1 SYNOPSIS
 
-    # push project directory to the remote server
+    push project directory to the remote server
     % tenmaya push foo ~/dev/foo
+
+    tail -f log files
+    % tenmaya log foo
 
 =head1 DESCRIPTION
 
