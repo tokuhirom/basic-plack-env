@@ -56,7 +56,7 @@ sub CMD_push {
 
 sub CMD_log {
     my $project = shift @ARGV // pod2usage();
-    ssh_cmd($project, "tail", '-f', "$BASE/$project/log/uwsgi.log", "$BASE/$project/log/nginx/error.log");
+    ssh_cmd($project, "tail", '-f', "$BASE/$project/log/plackup.log", "$BASE/$project/log/nginx/error.log");
 }
 
 sub get_server {

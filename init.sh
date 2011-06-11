@@ -8,7 +8,8 @@
 # Build it with 'python uwsgiconfig.py --build psgi'
 
 # libxml2-dev and libperl-dev is required by uwsgi.
-sudo aptitude install -y nginx build-essential curl git-core python-setuptools libxml2-dev libperl-dev
+sudo aptitude install -y nginx build-essential curl git-core python-setuptools
+sudo aptitude install -y libxml2-dev libperl-dev libdb-dev
 sudo curl -o /usr/local/bin/cpanm -L http://cpanmin.us/
 sudo chmod +x /usr/local/bin/cpanm
 sudo cp nginx.conf /etc/nginx/nginx.conf
