@@ -52,7 +52,11 @@ sub CMD_push {
     for ('reread', 'update', 'restart all') {
         ssh_cmd($project, "supervisorctl", $_);
     }
-    ssh_cmd($project, "tail", "$BASE/$project/log/plackup.log");
+}
+
+sub CMD_log {
+    my $project = shift @ARGV // pod2usage();
+    ssh_cmd($project, "tail", '-f', "$BASE/$project/log/uwsgi.log", "$BASE/$project/log/nginx/error.log");
 }
 
 sub get_server {
