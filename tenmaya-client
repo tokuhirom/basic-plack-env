@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 use strict;
 use warnings;
 use 5.010001;
@@ -39,8 +39,11 @@ sub CMD_push {
         "ssh://$server/usr/local/webapp/$project/", # src
         $directory,                                 # dst
     );
-    ssh_cmd($project, "cpanm --installdeps /usr/local/webapp/$project/");
-    ssh_cmd($project, "/bin/sh -c 'supervisorctl -c ~/etc/supervisord.conf'");
+    ssh_cmd($project, "cpanm -l ~/perl5/ --installdeps /usr/local/webapp/$project/");
+    ssh_cmd($project, "cd /usr/local/webapp/$project/ && ./postinstall");
+    ssh_cmd($project, "/bin/sh", '-c', q{'supervisorctl -c ~/etc/supervisord.conf' reread});
+    ssh_cmd($project, "/bin/sh", '-c', q{'supervisorctl -c ~/etc/supervisord.conf' update});
+    ssh_cmd($project, "/bin/sh", '-c', q{'supervisorctl -c ~/etc/supervisord.conf' restart all});
 }
 
 sub get_server {
