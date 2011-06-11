@@ -14,6 +14,7 @@ sudo chmod +x /usr/local/bin/cpanm
 sudo cp nginx.conf /etc/nginx/nginx.conf
 sudo /etc/init.d/nginx start
 sudo groupadd app
+sudo -H cpanm Starlet Plack
 
 echo "@@SUPERVISORD"
 sudo easy_install supervisor
