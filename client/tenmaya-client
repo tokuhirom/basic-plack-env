@@ -49,7 +49,7 @@ sub CMD_push {
     }
 
     ssh_cmd($project, "cpanm -l $BASE/$project/perl5/ --notest --verbose --no-man-pages --installdeps $BASE/$project/code/");
-    ssh_cmd($project, "/bin/sh", '-c', "cd $BASE/$project/ && if [ -x postinstall ]; then ./postinstall; fi");
+    ssh_cmd($project, "/bin/bash", '-c', "pwd; cd $BASE/$project/code/; if [ -x ./postinstall ]; then ./postinstall; fi");
     for ('reread', 'update', 'restart all') {
         ssh_cmd($project, "supervisorctl", $_);
     }
