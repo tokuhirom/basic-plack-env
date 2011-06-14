@@ -17,7 +17,7 @@ serverurl=unix://<HOME>/run//supervisor.sock ; use a unix:// URL  for a unix soc
 
 [program:plackup]
 directory=<HOME>/code
-command=perl -Mlib=<HOME>/perl5/lib/perl5 /usr/local/bin/plackup -s Starlet -p <PORT> -E deployment <HOME>/code/app.psgi
+command=perl -Mlib=<HOME>/perl5/lib/perl5 /usr/local/bin/plackup -s Starlet --max-workers=2 -p <PORT> -E deployment <HOME>/code/app.psgi
 autostart=true
 autorestart=true
 stdout_logfile=<HOME>/log/plackup.log

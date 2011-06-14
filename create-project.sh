@@ -36,6 +36,7 @@ sudo -H -u $USER mkdir -p $HOME/log/supervisor/
 sudo -H -u $USER mkdir -p $HOME/run/
 sudo -H -u $USER mkdir -p $HOME/tmp/
 sudo -H -u $USER mkdir -p $HOME/code/
+sudo -H -u $USER cpanm Starlet
 
 # reload parent supervisorctl process
 sudo -H supervisorctl reread
