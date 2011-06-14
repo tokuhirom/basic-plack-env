@@ -6,6 +6,7 @@ use Pod::Usage;
 use Cwd;
 
 my $BASE = '/usr/local/webapp/';
+our $VERSION='0.01';
 
 &main; exit;
 
