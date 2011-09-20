@@ -7,6 +7,7 @@ fi
 
 USER=$1
 
+sudo supervisorctl stop $USER
 sudo pkill -KILL -u $USER
 sudo userdel --remove $USER
 sudo rm /etc/supervisor/conf.d/$USER.conf

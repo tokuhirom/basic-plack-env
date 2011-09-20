@@ -36,12 +36,14 @@ sudo -H -u $USER mkdir -p $HOME/log/supervisor/
 sudo -H -u $USER mkdir -p $HOME/run/
 sudo -H -u $USER mkdir -p $HOME/tmp/
 sudo -H -u $USER mkdir -p $HOME/code/
-sudo -H -u $USER cpanm Starlet
+
+cd $HOME
+sudo -H -u $USER cpanm --notest --no-man-pages -l $HOME/perl5/ Starlet
 
 # reload parent supervisorctl process
 sudo -H supervisorctl reread
 sudo -H supervisorctl update
-sudo -H supervisorctl start all
+sudo -H supervisorctl start $USER
 
 sudo -H -u $USER supervisorctl -c $HOME/supervisord.conf reread
 sudo -H -u $USER supervisorctl -c $HOME/supervisord.conf update
