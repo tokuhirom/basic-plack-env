@@ -82,15 +82,15 @@ __END__
 
 =head1 NAME
 
-tenmaya-client - yet another container environment.
+deploy-project.pl- yet another container environment.
 
 =head1 SYNOPSIS
 
     push project directory to the remote server
-    % tenmaya push foo ~/dev/foo
+    % deploy-project.pl push foo ~/dev/foo
 
     tail -f log files
-    % tenmaya log foo
+    % deploy-project.pl log foo
 
 =head1 DESCRIPTION
 
