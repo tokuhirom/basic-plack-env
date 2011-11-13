@@ -61,7 +61,7 @@ sub CMD_log {
 }
 
 sub get_server {
-    my $server = $ENV{TENMAYA_SERVER} // die "Missing tenmaya server information in \$ENV{TENMAYA_SERVER}";
+    my $server = $ENV{TENMAYA_SERVER} || 'localhost';
     return $server;
 }
 
